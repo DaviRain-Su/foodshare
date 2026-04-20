@@ -37,7 +37,6 @@ export function Feed({ tag, userId, currentUserId }: FeedProps) {
     loadMore();
   }, []);
 
-  // Infinite scroll
   const lastPostRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (loading) return;
@@ -53,26 +52,26 @@ export function Feed({ tag, userId, currentUserId }: FeedProps) {
   );
 
   if (initial && loading) {
-    return <div className="text-center py-8 text-gray-400">Loading...</div>;
+    return <div className="text-center py-8 text-ink-4 font-serif">Loading...</div>;
   }
 
   if (posts.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-400">
-        <p className="text-4xl mb-2">🍽️</p>
-        <p>No posts yet</p>
+      <div className="text-center py-16">
+        <p className="text-2xl mb-3 font-hand text-ink-3">Nothing here yet</p>
+        <p className="text-sm text-ink-4 font-serif">Be the first to share something delicious</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {posts.map((post, i) => (
         <div key={post.id} ref={i === posts.length - 1 ? lastPostRef : undefined}>
           <PostCard post={post} currentUserId={currentUserId} />
         </div>
       ))}
-      {loading && <div className="text-center py-4 text-gray-400">Loading...</div>}
+      {loading && <div className="text-center py-4 text-ink-4 font-serif">Loading...</div>}
     </div>
   );
 }
