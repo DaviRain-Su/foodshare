@@ -24,6 +24,10 @@ export function NavBar() {
         </a>
         {user ? (
           <>
+            <a href="/calendar" className="flex flex-col items-center gap-0.5 text-ink-3 hover:text-rust">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="4" width="14" height="14" rx="2" /><path d="M3 8h14M7 2v4M13 2v4" /></svg>
+              <span className="text-[10px] font-mono tracking-wider uppercase">Cal</span>
+            </a>
             <a href="/post/new" className="flex flex-col items-center gap-0.5 text-ink-3 hover:text-rust">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="10" cy="10" r="8" /><path d="M10 6v8M6 10h8" /></svg>
               <span className="text-[10px] font-mono tracking-wider uppercase">Post</span>
