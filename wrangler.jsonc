@@ -1,0 +1,29 @@
+{
+	"compatibility_date": "2026-04-20",
+	"compatibility_flags": ["global_fetch_strictly_public", "nodejs_compat"],
+	"name": "foodshare",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "foodshare",
+			"database_id": "c432bdfa-dd1c-4038-a119-a3dd2c076eb0"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "R2_IMAGES",
+			"bucket_name": "foodshare-images"
+		}
+	],
+	"vars": {
+		"R2_PUBLIC_URL": "/api/images"
+	}
+}
