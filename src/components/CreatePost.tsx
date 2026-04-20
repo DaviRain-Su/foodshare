@@ -104,7 +104,7 @@ export function CreatePost() {
 
       if (!res.ok) throw new Error(res.data.error?.message || 'Post failed');
 
-      window.location.href = '/';
+      window.location.href = '/feed';
     } catch (err: any) {
       setError(err.message);
       setLoading(false);

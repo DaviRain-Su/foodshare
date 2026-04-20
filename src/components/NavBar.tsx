@@ -18,7 +18,7 @@ export function NavBar() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-paper/90 backdrop-blur-md border-t border-ink/10 z-50">
       <div className="max-w-lg mx-auto flex items-center justify-around h-14">
-        <a href="/" className="flex flex-col items-center gap-0.5 text-ink-3 hover:text-rust">
+        <a href="/feed" className="flex flex-col items-center gap-0.5 text-ink-3 hover:text-rust">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 7.5L10 2l7 5.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V7.5z" /><path d="M7 18V11h6v7" /></svg>
           <span className="text-[10px] font-mono tracking-wider uppercase">Home</span>
         </a>

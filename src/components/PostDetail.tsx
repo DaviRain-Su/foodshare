@@ -55,7 +55,7 @@ export function PostDetail({ postId, currentUserId }: PostDetailProps) {
   const handleDelete = async () => {
     if (!confirm('Delete this post?')) return;
     const res = await api.deletePost(postId);
-    if (res.ok) window.location.href = '/';
+    if (res.ok) window.location.href = '/feed';
   };
 
   const deleteComment = async (commentId: string) => {

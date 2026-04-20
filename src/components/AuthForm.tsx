@@ -13,7 +13,7 @@ export function LoginForm() {
     setLoading(true);
     const res = await api.login(email, password);
     setLoading(false);
-    if (res.ok) { window.location.href = '/'; }
+    if (res.ok) { window.location.href = '/feed'; }
     else { setError(res.data.error?.message || 'Login failed'); }
   };
 
@@ -52,7 +52,7 @@ export function RegisterForm() {
     setLoading(true);
     const res = await api.register(email, password, nickname);
     setLoading(false);
-    if (res.ok) { window.location.href = '/'; }
+    if (res.ok) { window.location.href = '/feed'; }
     else { setError(res.data.error?.message || 'Registration failed'); }
   };
 
