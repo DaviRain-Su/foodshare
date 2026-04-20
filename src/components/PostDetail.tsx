@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../lib/api';
+import { avatarSrc } from '../lib/image';
 import { MiniMap } from './MiniMap';
 
 interface PostDetailProps {
@@ -90,8 +91,8 @@ export function PostDetail({ postId, currentUserId }: PostDetailProps) {
         <div className="flex items-center gap-2">
           <a href={`/user/${post.user.id}`} className="flex items-center gap-2">
             <div className="w-10 h-10 bg-orange-200 rounded-full flex items-center justify-center font-medium text-orange-700 overflow-hidden">
-              {post.user.avatar_url
-                ? <img src={post.user.avatar_url} alt="" className="w-full h-full object-cover" />
+              {avatarSrc(post.user.avatar_url)
+                ? <img src={avatarSrc(post.user.avatar_url)!} alt="" className="w-full h-full object-cover" />
                 : post.user.nickname[0]}
             </div>
             <span className="font-medium">{post.user.nickname}</span>
@@ -135,8 +136,8 @@ export function PostDetail({ postId, currentUserId }: PostDetailProps) {
           {comments.map((c) => (
             <div key={c.id} className="flex gap-2">
               <div className="w-7 h-7 bg-orange-200 rounded-full flex items-center justify-center text-xs font-medium text-orange-700 shrink-0 overflow-hidden">
-                {c.user.avatar_url
-                  ? <img src={c.user.avatar_url} alt="" className="w-full h-full object-cover" />
+                {avatarSrc(c.user.avatar_url)
+                  ? <img src={avatarSrc(c.user.avatar_url)!} alt="" className="w-full h-full object-cover" />
                   : c.user.nickname[0]}
               </div>
               <div className="flex-1 min-w-0">

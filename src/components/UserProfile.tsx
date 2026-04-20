@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../lib/api';
+import { avatarSrc } from '../lib/image';
 import { Feed } from './Feed';
 
 export function UserProfile({ userId, currentUserId }: { userId: string; currentUserId?: string }) {
@@ -36,8 +37,8 @@ export function UserProfile({ userId, currentUserId }: { userId: string; current
     <div>
       <div className="bg-white p-6 text-center border-b">
         <div className="w-20 h-20 bg-orange-200 rounded-full flex items-center justify-center text-2xl font-bold text-orange-700 mx-auto mb-3 overflow-hidden">
-          {user.avatar_url
-            ? <img src={user.avatar_url} alt="" className="w-full h-full object-cover" />
+          {avatarSrc(user.avatar_url)
+            ? <img src={avatarSrc(user.avatar_url)!} alt="" className="w-full h-full object-cover" />
             : user.nickname[0]}
         </div>
         <h1 className="text-lg font-bold">{user.nickname}</h1>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { api } from '../lib/api';
+import { avatarSrc } from '../lib/image';
 
 interface Post {
   id: string;
@@ -85,8 +86,8 @@ export function PostCard({ post, currentUserId }: { post: Post; currentUserId?: 
         <div className="flex items-center gap-2 mb-2">
           <a href={`/user/${post.user.id}`} className="flex items-center gap-2">
             <div className="w-8 h-8 bg-orange-200 rounded-full flex items-center justify-center text-sm font-medium text-orange-700 overflow-hidden">
-              {post.user.avatar_url
-                ? <img src={post.user.avatar_url} alt="" className="w-full h-full object-cover" />
+              {avatarSrc(post.user.avatar_url)
+                ? <img src={avatarSrc(post.user.avatar_url)!} alt="" className="w-full h-full object-cover" />
                 : post.user.nickname[0]}
             </div>
             <span className="font-medium text-sm">{post.user.nickname}</span>

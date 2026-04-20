@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { api } from '../lib/api';
+import { avatarSrc } from '../lib/image';
 import { CONSTANTS } from '../lib/constants';
 
 export function Settings() {
@@ -69,8 +70,8 @@ export function Settings() {
           onClick={() => fileRef.current?.click()}
           className="w-16 h-16 bg-orange-200 rounded-full flex items-center justify-center text-xl font-bold text-orange-700 cursor-pointer overflow-hidden hover:opacity-80"
         >
-          {avatarPreview || user.avatar_url
-            ? <img src={avatarPreview || user.avatar_url} alt="" className="w-full h-full object-cover" />
+          {avatarPreview || avatarSrc(user.avatar_url)
+            ? <img src={avatarPreview || avatarSrc(user.avatar_url)!} alt="" className="w-full h-full object-cover" />
             : user.nickname[0]}
         </div>
         <button type="button" onClick={() => fileRef.current?.click()} className="text-sm text-orange-500 hover:underline">Change avatar</button>
