@@ -1,0 +1,14 @@
+{
+  "name": "FoodShare",
+  "short_name": "FoodShare",
+  "description": "A food diary for friends",
+  "start_url": "/feed",
+  "display": "standalone",
+  "background_color": "#f5efe3",
+  "theme_color": "#b7522a",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}

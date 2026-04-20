@@ -7,9 +7,41 @@ import { env } from 'cloudflare:workers';
 
 const { id } = Astro.params;
 const userId = await getAuthUser(Astro.request, env.JWT_SECRET);
+
+// Fetch post for OG meta
+let ogTitle = 'Post - FoodShare';
+let ogDesc = 'FoodShare - A food diary for friends';
+let ogImage = '';
+
+try {
+  const post = await env.DB.prepare(`
+    SELECT p.content, u.nickname,
+      (SELECT image_key FROM post_images WHERE post_id = p.id ORDER BY sort_order LIMIT 1) AS first_image
+    FROM posts p JOIN users u ON p.user_id = u.id WHERE p.id = ?
+  `).bind(id).first<{ content: string; nickname: string; first_image: string | null }>();
+  if (post) {
+    ogTitle = `${post.nickname}: ${post.content?.slice(0, 60) || 'Food post'} - FoodShare`;
+    ogDesc = post.content?.slice(0, 200) || 'A food diary entry';
+    if (post.first_image) {
+      ogImage = `${Astro.url.origin}/api/images/${post.first_image}`;
+    }
+  }
+} catch {}
 ---
 
-<Layout title="Post - FoodShare">
+<Layout title={ogTitle}>
+  <Fragment slot="head">
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDesc} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={Astro.url.href} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDesc} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+  </Fragment>
+
   <header class="bg-paper/90 backdrop-blur-md border-b border-ink/8 sticky top-0 z-40">
     <div class="max-w-lg mx-auto px-4 h-12 flex items-center">
       <a href="/feed" class="text-ink-4 hover:text-ink-2 mr-3">&larr;</a>

@@ -23,5 +23,19 @@
     color: var(--color-ink);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    transition: background-color 0.3s, color 0.3s;
   }
+}
+
+/* Dark mode */
+.dark {
+  --color-paper: #1a1714;
+  --color-paper-2: #252019;
+  --color-paper-3: #302a20;
+  --color-ink: #e8e2d6;
+  --color-ink-2: #c9c0af;
+  --color-ink-3: #9a9079;
+  --color-ink-4: #6b6150;
+  --color-rust: #d4764a;
+  --color-rust-deep: #e89060;
 }

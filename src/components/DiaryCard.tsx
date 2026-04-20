@@ -84,7 +84,7 @@ export function DiaryCard({ post, currentUserId }: { post: Post; currentUserId?:
         {/* Location */}
         {(post.location || post.restaurant_name) && (
           <p className="text-[10px] font-mono text-ink-4 mb-1.5 tracking-wide">
-            {post.restaurant_name}{post.restaurant_name && post.location ? ' \u00b7 ' : ''}{post.location}
+            {post.restaurant_name}{post.restaurant_name && post.location ? ' · ' : ''}{post.location}
           </p>
         )}
 

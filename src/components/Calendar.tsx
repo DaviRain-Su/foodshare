@@ -40,7 +40,7 @@ export function Calendar({ currentUserId }: { currentUserId?: string }) {
     }
   });
 
-  const monthNames = ['\u4e00\u6708','\u4e8c\u6708','\u4e09\u6708','\u56db\u6708','\u4e94\u6708','\u516d\u6708','\u4e03\u6708','\u516b\u6708','\u4e5d\u6708','\u5341\u6708','\u5341\u4e00\u6708','\u5341\u4e8c\u6708'];
+  const monthNames = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
 
   const prevMonth = () => {
     setMonth(m => m.month === 0 ? { year: m.year - 1, month: 11 } : { year: m.year, month: m.month - 1 });
@@ -70,7 +70,7 @@ export function Calendar({ currentUserId }: { currentUserId?: string }) {
 
       {/* Weekday headers */}
       <div className="grid grid-cols-7 gap-1 mb-1">
-        {['\u65e5','\u4e00','\u4e8c','\u4e09','\u56db','\u4e94','\u516d'].map(d => (
+        {['日','一','二','三','四','五','六'].map(d => (
           <div key={d} className="text-center py-1 text-[10px] font-mono text-ink-4 tracking-wider">{d}</div>
         ))}
       </div>
@@ -123,7 +123,7 @@ export function Calendar({ currentUserId }: { currentUserId?: string }) {
       {/* Stats */}
       <div className="mt-6 flex items-center justify-center gap-4 text-[11px] font-mono text-ink-4 tracking-wide">
         <span>{Object.keys(postsByDay).length} days recorded</span>
-        <span>\u00b7</span>
+        <span>·</span>
         <span>{posts.filter(p => {
           const d = new Date(p.created_at + (p.created_at.includes('Z') ? '' : 'Z'));
           return d.getFullYear() === month.year && d.getMonth() === month.month;
