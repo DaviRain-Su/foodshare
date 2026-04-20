@@ -19,12 +19,14 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonError(400, 'INVALID_INPUT', 'Invalid JSON body');
   }
 
-  const { content, image_keys, tags, location, restaurant_name } = body as {
+  const { content, image_keys, tags, location, restaurant_name, latitude, longitude } = body as {
     content?: string;
     image_keys?: string[];
     tags?: string[];
     location?: string;
     restaurant_name?: string;
+    latitude?: number;
+    longitude?: number;
   };
 
   // Validate
@@ -62,8 +64,8 @@ export const POST: APIRoute = async ({ request }) => {
   // Use batch for transaction-like behavior
   const statements = [
     env.DB.prepare(
-      'INSERT INTO posts (id, user_id, content, location, restaurant_name) VALUES (?, ?, ?, ?, ?)'
-    ).bind(postId, userId, postContent, location ?? null, restaurant_name ?? null),
+      'INSERT INTO posts (id, user_id, content, location, restaurant_name, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    ).bind(postId, userId, postContent, location ?? null, restaurant_name ?? null, latitude ?? null, longitude ?? null),
   ];
 
   for (let i = 0; i < image_keys.length; i++) {
@@ -101,6 +103,8 @@ export const POST: APIRoute = async ({ request }) => {
         tags: tags ?? [],
         location: location ?? null,
         restaurant_name: restaurant_name ?? null,
+        latitude: latitude ?? null,
+        longitude: longitude ?? null,
         like_count: 0,
         comment_count: 0,
         is_liked: false,
@@ -124,7 +128,7 @@ export const GET: APIRoute = async ({ request, url }) => {
 
   // Build query
   let query = `
-    SELECT p.id, p.user_id, p.content, p.location, p.restaurant_name, p.created_at,
+    SELECT p.id, p.user_id, p.content, p.location, p.restaurant_name, p.latitude, p.longitude, p.created_at,
            u.nickname, u.avatar_url,
            (SELECT COUNT(*) FROM likes l WHERE l.post_id = p.id) AS like_count,
            (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS comment_count
@@ -137,7 +141,7 @@ export const GET: APIRoute = async ({ request, url }) => {
 
   if (tag) {
     query = `
-      SELECT p.id, p.user_id, p.content, p.location, p.restaurant_name, p.created_at,
+      SELECT p.id, p.user_id, p.content, p.location, p.restaurant_name, p.latitude, p.longitude, p.created_at,
              u.nickname, u.avatar_url,
              (SELECT COUNT(*) FROM likes l WHERE l.post_id = p.id) AS like_count,
              (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS comment_count
@@ -227,6 +231,8 @@ export const GET: APIRoute = async ({ request, url }) => {
       tags: tagsMap[pid] ?? [],
       location: p.location,
       restaurant_name: p.restaurant_name,
+      latitude: p.latitude,
+      longitude: p.longitude,
       like_count: p.like_count,
       comment_count: p.comment_count,
       is_liked: likedSet.has(pid),

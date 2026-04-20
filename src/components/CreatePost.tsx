@@ -8,6 +8,8 @@ export function CreatePost() {
   const [tagInput, setTagInput] = useState('');
   const [location, setLocation] = useState('');
   const [restaurantName, setRestaurantName] = useState('');
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [locating, setLocating] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,41 @@ export function CreatePost() {
     setTagInput('');
   };
 
+  const getLocation = async () => {
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported');
+      return;
+    }
+    setLocating(true);
+    setError('');
+    try {
+      const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+        });
+      });
+      const { latitude, longitude } = pos.coords;
+      setCoords({ lat: latitude, lng: longitude });
+
+      // Reverse geocode with Nominatim
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=zh`,
+        { headers: { 'User-Agent': 'FoodShare/1.0' } }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        const addr = data.address;
+        const parts = [addr?.road, addr?.suburb || addr?.neighbourhood, addr?.city || addr?.town || addr?.county].filter(Boolean);
+        setLocation(parts.join(', ') || data.display_name?.split(',').slice(0, 3).join(',') || '');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to get location');
+    } finally {
+      setLocating(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (files.length === 0) {
@@ -61,6 +98,8 @@ export function CreatePost() {
         tags: tags.length > 0 ? tags : undefined,
         location: location || undefined,
         restaurant_name: restaurantName || undefined,
+        latitude: coords?.lat,
+        longitude: coords?.lng,
       });
 
       if (!res.ok) throw new Error(res.data.error?.message || 'Post failed');
@@ -151,13 +190,28 @@ export function CreatePost() {
       </div>
 
       {/* Location & Restaurant */}
-      <input
-        placeholder="Location (optional)"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        maxLength={CONSTANTS.LOCATION_MAX_LENGTH}
-        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-      />
+      <div>
+        <div className="flex gap-1">
+          <input
+            placeholder="Location (optional)"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            maxLength={CONSTANTS.LOCATION_MAX_LENGTH}
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+          />
+          <button
+            type="button"
+            onClick={getLocation}
+            disabled={locating}
+            className="px-3 py-2 bg-gray-100 rounded-lg text-sm hover:bg-gray-200 disabled:opacity-50 shrink-0"
+          >
+            {locating ? '...' : '📍'}
+          </button>
+        </div>
+        {coords && (
+          <p className="text-xs text-green-600 mt-1">✓ {coords.lat.toFixed(4)}, {coords.lng.toFixed(4)}</p>
+        )}
+      </div>
       <input
         placeholder="Restaurant name (optional)"
         value={restaurantName}

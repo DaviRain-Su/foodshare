@@ -38,6 +38,8 @@ export const api = {
     tags?: string[];
     location?: string;
     restaurant_name?: string;
+    latitude?: number;
+    longitude?: number;
   }) =>
     request('/posts', {
       method: 'POST',

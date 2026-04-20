@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../lib/api';
+import { MiniMap } from './MiniMap';
 
 interface PostDetailProps {
   postId: string;
@@ -106,6 +107,10 @@ export function PostDetail({ postId, currentUserId }: PostDetailProps) {
           <p className="text-xs text-gray-400">
             {post.restaurant_name}{post.restaurant_name && post.location && ' · '}{post.location}
           </p>
+        )}
+
+        {post.latitude && post.longitude && (
+          <MiniMap lat={post.latitude} lng={post.longitude} />
         )}
 
         {post.tags.length > 0 && (

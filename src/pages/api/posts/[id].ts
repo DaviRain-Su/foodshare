@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ params, request }) => {
   const postId = params.id!;
 
   const post = await env.DB.prepare(`
-    SELECT p.id, p.user_id, p.content, p.location, p.restaurant_name, p.created_at,
+    SELECT p.id, p.user_id, p.content, p.location, p.restaurant_name, p.latitude, p.longitude, p.created_at,
            u.nickname, u.avatar_url,
            (SELECT COUNT(*) FROM likes l WHERE l.post_id = p.id) AS like_count,
            (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS comment_count
@@ -54,6 +54,8 @@ export const GET: APIRoute = async ({ params, request }) => {
       tags: tagsResult.results.map((t) => t.tag),
       location: post.location,
       restaurant_name: post.restaurant_name,
+      latitude: post.latitude,
+      longitude: post.longitude,
       like_count: post.like_count,
       comment_count: post.comment_count,
       is_liked: isLiked,
